@@ -42,6 +42,16 @@ if [ -z "$2" ]; then
       if [ $dt -eq 2 ]; then
          read -p "Enter dir : " customdir
          loc="$customdir"
+         if [ ! -d "$customdir" ]; then
+            space
+            sleep 1
+            echo -e " Directory ${R}$customdir${N} does not exist, EXITING"
+            space
+            sleep 1
+            exit
+            exit
+            echo ""
+         fi
       fi
       if [ $dt -gt 2 ] || [ $dt -lt 1 ]; then
          loc="/home"
