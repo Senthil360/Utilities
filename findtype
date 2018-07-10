@@ -1,0 +1,141 @@
+#!/bin/bash
+###<Senthil360 @xda-developers.com>###
+##Usage Example - "bash findtype py" ### location can be specified as a 2nd parameter
+#colors
+G='\033[01;32m'
+R='\033[01;31m'
+C='\033[01;36m'
+B='\033[01;34m'
+BR='\033[05;31m'
+bo='\033[1m'
+N='\033[0m'
+div="  ====================================  "
+clear
+sleep 1
+echo ""
+resetAll() {
+   unset $1; unset $2; unset change; unset dt; unset filetype; unset customdir; unset obj; unset opt; unset opt2; unset b;
+}
+
+space() {
+   echo ""
+   echo $div
+   echo ""
+}
+filetype=$1
+loc=$2
+if [ -z "$2" ]; then
+   echo -e "The ${C}default search location${N} is ${G}/home${N}"
+   loc="/home"
+   echo ""
+   read -p "press 'c' to change or any key to skip : " change
+   if [ "$change" = "c" ] || [ "$change" = "C" ]; then
+      echo "Change to : "
+      space
+      echo -e "${R}1.${N}Current working directory"
+      echo -e "${R}2.${N}Enter custom directory"
+      space
+      read -p "Option : " dt
+      if [ $dt -eq 1 ]; then
+         loc=$(pwd)
+      fi
+      if [ $dt -eq 2 ]; then
+         read -p "Enter dir : " customdir
+         loc="$customdir"
+      fi
+      if [ $dt -gt 2 ] || [ $dt -lt 1 ]; then
+         loc="/home"
+      fi
+   else
+      poor_fella=true;
+   fi
+   sleep 0.5
+   clear
+   space
+   echo -e "Searched recursively from ${G}$loc${N}"
+   space
+fi
+findFile() {
+   obj=$(find $loc -name *.$filetype)
+   locstore=()
+   for i in $obj; do
+      locstore+=($i)
+   done
+   if [ ${#locstore[@]} -eq 0 ]; then
+      sleep 1.5
+      clear
+      space
+      echo -e "No files with the extension ${G}$filetype${N} found in "$loc" "
+      echo ""
+      echo -e " ${R}Exiting${N} "
+      space
+      sleep 2
+      exit
+      exit
+   fi
+}
+
+findFile
+
+terminalOut2() {
+   case "$opt2" in
+      1) cat ${locstore[$opt]}
+         read -sn 1 -p "Press any key to continue.."
+         resetAll
+         clear
+         terminalOut1
+         ;;
+      2) ls -l --color=auto ${locstore[$opt]}
+         read -sn 1 -p "Press any key to continue.."
+         resetAll
+         clear
+         terminalOut1
+         ;;
+      3) gedit ${locstore[$opt]}
+         read -sn 1 -p "Press any key to continue.."
+         resetAll
+         clear
+         terminalOut1
+         ;;
+      0) clear
+         exit
+         exit
+         ;;
+      *) echo "Invalid option"
+         resetAll
+         clear
+         terminalOut1
+         ;;
+   esac
+}
+
+terminalOut1() {
+   echo -e "Choose a ${G}file${N} to work on"
+   echo ""
+   b=1
+   for j in "${locstore[@]}"; do
+      echo -e "${G}$b${N} - ${bo}$j${N}"
+      b=$(($b+1))
+   done
+   space
+   echo -e "${B}* Press Ctrl+z to exit${N}"
+   space
+   read -p "Option : " opt
+   clear
+   sleep 0.5
+   echo -e "What do you want to do with ${G}${locstore[$opt]}${N}"
+   space
+   echo -e "${R}1.${N} View on terminal"
+   echo -e "${R}2.${N} View file attributes"
+   echo -e "${R}3.${N} Open with a text editor"
+   echo ""
+   echo -e "${R}0.${N} Exit"
+   echo ""
+   read -p "Option : " opt2
+   terminalOut2
+}
+
+
+terminalOut1
+
+
