@@ -56,7 +56,7 @@ if [ -z "$2" ]; then
    space
 fi
 findFile() {
-   obj=$(find $loc -name *.$filetype)
+   obj=$(find $loc -name *.$filetype 2>/dev/null)
    locstore=()
    for i in $obj; do
       locstore+=($i)
