@@ -18,23 +18,46 @@ perm_alias() {
    echo 'alias python="python3"' > ".bashrc"
 }
 
-gt_python() {
+setupGtPython() {
+cd ~
+if[ ! -d "codes" ]; then
+   setupCodesDir
+fi
+   cd "codes/python"
+   git clone https://github.com/Senthil360/gt_python.git
+   mkdir "BETA"
+   cd "BETA"
+   git clone -b BETA https://github.com/Senthil360/gt_python.git
+   git checkout BETA
+}
+
+setupPythonML(){
+cd ~
+if[ ! -d "codes" ]; then
+   setupCodesDir
+fi
+   cd "codes/python"
+   git clone git@gitlab.com:Senthil360/PythonML.git
+}
+
+
+setupCodesDir() {
 cd ~
 if [ -d "codes" ]; then
    code=true
 elif [ ! -d "codes" ]; then
    code=false
    mkdir "codes"
+   chmod 755 codes
    cd "codes"
    mkdir "python"
-   cd "python"
-   git clone https://github.com/Senthil360/gt_python.git
-   mkdir "BETA"
-   cd "BETA"
-   git clone -b BETA https://github.com/Senthil360/gt_python.git
-   git checkout BETA
+   mkdir "java"
+   mkdir "c"
+   mkdir "Android"
+   chmod 755 *
 fi
 }
+
 
 echo -e "${R}     Senthil360 LINUX SETUP script      ${N}"
 echo ""
@@ -45,6 +68,8 @@ echo ""
 echo -e "${B}2.${N} Add alias to bashrc"
 echo ""
 echo -e "${B}3.${N} Clone gt_python"
+echo ""
+echo -e "${B}4.${N} Clone PythonML"
 echo ""
 echo -e "${B}0 -${N} Execute all the above"
 echo ""
@@ -62,12 +87,17 @@ while true; do
         perm_alias
         ;;
       3)
-        gt_python
+        setupGtPython
+        ;;
+      4)
+        setupPythonML
         ;;
       0)
         func_s777
         perm_alias
-        gt_python
+        setupCodesDir
+        setupGtPython
+        setupPythonML
         ;;
       *)
         echo "Unknown option"

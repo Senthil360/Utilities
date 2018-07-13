@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#Install Python3 if not installed
+pyInstalled=false
+if [ $(which python3 | grep "python") ]; then pyInstalled=true; fi
+if [ pyInstalled = true ]; then sudo apt-get install -y python; fi
+
+#Install Python3 Machine Learning dependencies
+installPyDep(){
+   package=$1
+   python3 -m pip install $package
+}
+
+installPyDep quandl;
+installPyDep sklearn;
+installPyDep pandas;
+
+#Install Atom Text Editor
+curl -sL https://packagecloud.io/AtomEditor/atom/gpgkey | sudo apt-key add -
+sudo sh -c 'echo "deb [arch=amd64] https://packagecloud.io/AtomEditor/atom/any/ any main" > /etc/apt/sources.list.d/atom.list'
+sudo apt-get update
+sudo apt-get install -y atom
+
+#Default git editor
+git config --global core.editor "gedit -s"
+
+#Check and add ssh-keygen
+addKeygenSSH() {
+   eval $(ssh-agent -s)
+   ssh-add ~/.ssh/id_rsa
+}
+
+if [ -f ~/.ssh/id_rsa ]; then
+   addKeygenSSH
+elif [ ! -f ~/.ssh/id_rsa ]; then
+   ssh-keygen -f ~/.ssh/id_rsa
+   addKeygenSSH
+fi
