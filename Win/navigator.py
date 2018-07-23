@@ -3,6 +3,7 @@ import argparse
 import sys
 import re
 from termcolor import colored
+from subprocess import call
 
 '''
 This is basically a windows cmdline navigator written in python
@@ -44,18 +45,19 @@ while True:
     a = 1
     dirlist = []
     for i in (os.listdir(os.getcwd())):
+        call(["clear"])
         if os.path.isdir(i):
             dis = ('{} - {}'.format(a, i))
             print(colored(dis, 'red'))
             del dis
         elif os.path.isfile(i):
-            dis = ('{} - {}'.format(a, i))
+            dis =('{} - {}'.format(a,i))
             print(colored(dis, 'green'))
             del dis
         a = a + 1
         dirlist.append(i)
     space()
-    print(colored('1 - {}'.format(int(a) - 1), 'yellow'), " - select file/dir")
+    print(colored('1 - {}'.format(int(a)-1), 'yellow'), " - select file/dir")
     print("        or       ")
     print(colored("base ", 'yellow'), " - change to a root drive")
     print("        or       ")
@@ -71,24 +73,28 @@ while True:
         movebase(optbase)
         del opt
     elif opt == 'fol':
+        call(["clear"])
         favdir()
         optfav = input(" Choose a directory ")
-        os.chdir(favdir()[int(int(optfav) - 1)])
+        os.chdir(favdir()[int(int(optfav)-1)])
         print(os.getcwd())
         del opt
     elif opt == "view":
+        call(["clear"])
         print("Under Construction")
-        #       v = int(viewno) - 1
-        #       print(os.stat(dirlist[int(v)]))
+#       v = int(viewno) - 1
+#       print(os.stat(dirlist[int(v)]))
         del opt
     elif opt == "prev":
+        call(["clear"])
         os.chdir('..')
         del opt
     else:
-        if os.path.isfile(dirlist[int(int(opt) - 1)]):
-            os.startfile(dirlist[int(int(opt) - 1)])
+        if os.path.isfile(dirlist[int(int(opt)-1)]):
+            os.startfile(dirlist[int(int(opt)-1)])
             del opt
-        elif os.path.isdir(dirlist[int(int(opt) - 1)]):
-            os.chdir(dirlist[int(int(opt) - 1)])
+        elif os.path.isdir(dirlist[int(int(opt)-1)]):
+            call(["clear"])
+            os.chdir(dirlist[int(int(opt)-1)])
             os.listdir(os.getcwd())
             del opt
