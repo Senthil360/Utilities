@@ -6,6 +6,7 @@ from termcolor import colored
 from subprocess import call
 
 '''
+<Senthil360 @xda-developers.com>
 This is basically a windows cmdline navigator written in python
 Run the script, it should be self-explanatory
 If it is a file it will be executed by the default program specified
@@ -13,6 +14,7 @@ If it is a directory it will be accessed
 Might add Batch copy, move. delete in the future
 '''
 
+os.chdir("D://codes")
 
 def movebase(input):
     d = ('{}://'.format(optbase))
@@ -21,7 +23,7 @@ def movebase(input):
 
 
 def favdir():
-    with open("D://codes//Windows//often.txt", 'r') as e:  # Your file with locations
+    with open("D://codes//Windows//often.txt", 'r') as e:   # Your file with locations
         f = 1
         favlist = []
         for line in e:
@@ -88,6 +90,13 @@ while True:
     elif opt == "prev":
         call(["clear"])
         os.chdir('..')
+        del opt
+    elif opt == 'br':
+        optbring = input("Choose file/dir : ")
+        if os.path.isfile(dirlist[int(int(optbring)-1)]):
+            os.startfile(dirlist[int(int(optbring)-1)])
+        elif os.path.isdir(dirlist[int(int(optbring)-1)]):
+            os.startfile(dirlist[int(int(optbring)-1)])
         del opt
     else:
         if os.path.isfile(dirlist[int(int(opt)-1)]):
