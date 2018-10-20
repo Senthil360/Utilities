@@ -19,8 +19,17 @@ os.chdir("D://codes")
 def movebase(input):
     d = ('{}://'.format(optbase))
     os.chdir(d)
-    print(os.getcwd())
+    if checkaccess("d"):
+        print(os.listdir(os.getcwd()))
+    if checkaccess("f"):
+        print((os.listdir(os.getcwd())))
 
+
+def checkaccess(acc):                            #Open in directory only or files only mode
+    if len(sys.argv) == 1:
+        return True
+    if sys.argv[1] == acc:
+        return True
 
 def favdir():
     with open("D://codes//Windows//often.txt", 'r') as e:   # Your file with locations
@@ -49,14 +58,17 @@ while True:
     for i in (os.listdir(os.getcwd())):
         call(["clear"])
         if os.path.isdir(i):
-            dis = ('{} - {}'.format(a, i))
-            print(colored(dis, 'red'))
-            del dis
+            if checkaccess("d") or checkaccess("all"):
+                dis = ('{} - {}'.format(a, i))
+                print(colored(dis, 'red'))
+                del dis
+                a = a + 1
         elif os.path.isfile(i):
-            dis =('{} - {}'.format(a,i))
-            print(colored(dis, 'green'))
-            del dis
-        a = a + 1
+            if checkaccess("f") or checkaccess("all"):
+                dis =('{} - {}'.format(a,i))
+                print(colored(dis, 'green'))
+                del dis
+                a = a + 1
         dirlist.append(i)
     space()
     print(colored('1 - {}'.format(int(a)-1), 'yellow'), " - select file/dir")
