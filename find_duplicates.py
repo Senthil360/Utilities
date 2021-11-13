@@ -31,12 +31,12 @@ def getDuplicates():
 
     for source_files in os.listdir(source_directory):
         for dest_files in os.listdir(destination_directory):
-            if fileSize(source_directory+source_files) == fileSize(destination_directory+dest_files
+            if fileSize(os.path.join(source_directory, source_files)) == fileSize(os.path.join(destination_directory, dest_files)
             ) and os.path.isfile(source_directory+source_files) and os.path.abspath(dest_files
             ) != os.path.abspath(source_files):
                 duplicates += 1
-                print(source_directory+source_files,
-                      destination_directory+dest_files)
+                print(os.path.join(source_directory, source_files) ,
+                      os.path.join(destination_directory, dest_files))
 
     print(duplicates, " duplicates found")
 
