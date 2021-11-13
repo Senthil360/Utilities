@@ -27,18 +27,29 @@ def fileSize(file):
 
 def getDuplicates():
 
-    duplicates = 0
+    duplicates_number = 0
+    i = 0
+    file_count = len(os.listdir())
+    exclusion_list = []
 
-    for source_files in os.listdir(source_directory):
-        for dest_files in os.listdir(destination_directory):
-            if fileSize(os.path.join(source_directory, source_files)) == fileSize(os.path.join(destination_directory, dest_files)
-            ) and os.path.isfile(source_directory+source_files) and os.path.abspath(dest_files
-            ) != os.path.abspath(source_files):
-                duplicates += 1
-                print(os.path.join(source_directory, source_files) ,
-                      os.path.join(destination_directory, dest_files))
+    while i < file_count:    
+        for source_files in os.listdir(source_directory):
+            if len(exclusion_list) > 0:
+                if source_files == str(exclusion_list[duplicates_number-1]):
+                    continue
+                i += 1
+            for dest_files in os.listdir(destination_directory):
+                if fileSize(os.path.join(source_directory, source_files)
+                ) == fileSize(os.path.join(destination_directory, dest_files)
+                ) and os.path.isfile(source_directory+source_files
+                ) and os.path.abspath(dest_files) != os.path.abspath(source_files):
+                    duplicates_number += 1
+                    exclusion_list.append(dest_files)
+                    print(os.path.join(source_directory, source_files) ,
+                        os.path.join(destination_directory, dest_files))
 
-    print(duplicates, " duplicates found")
+    #print(exclusion_list)
+    print(duplicates_number, " duplicates found")
 
 
 def recursiveCheck():
